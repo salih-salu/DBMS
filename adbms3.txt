@@ -1,0 +1,280 @@
+mysql> use bank;
+mysql> create table customerr(cust_id varchar(5),c_name varchar(10),city varchar(10));
+Query OK, 0 rows affected (0.48 sec)
+mysql> insert into customerr values('c02','manu','aroor');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customerr values('c04','varun','cherthala');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into customerr values('c05','arun','thrissur');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into customerr values('c06','anu','ktm');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customerr values('c09','ajay','delhi');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into customerr values('c10','diya','goa');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> create table branch(b_id varchar(5),bname varchar(10),city varchar(10));
+Query OK, 0 rows affected (0.80 sec)
+
+mysql> insert into branch values('b01','alpy','alappuzha');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into branch values('b02','aroor','pallipuram');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into branch values('b03','aluva','ekm');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into branch values('b04','palayam','tvm');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into branch values('b07','mysoor','karnataka');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into branch values('b06','delhi','delhi');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> create table deposit(acc_no varchar(10),cust_id varchar(5),amt int,branch_id varchar(5),opendate date);
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> insert into deposit values('a21','c03',45000,'b33','2019-10-01');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into deposit values('a34','c02',67000,'b09','2016-01-01');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into deposit values('a03','c06',7000,'b10','2026-12-09');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into deposit values('a06','c45',11000,'b87','2002-04-21');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> create table borrow(loan_no varchar(5),cust_id varchar(5),branch_id varchar(5),amt int);
+Query OK, 0 rows affected (0.43 sec)
+
+mysql> insert into borrow values('002','c02','b23',2300);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into borrow values('010','c10','b33',9300);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into borrow values('023','c09','b04',6700);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into borrow values('078','c07','b05',34500);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into borrow values('034','c25','b01',4567);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from customerr;
++---------+--------+-----------+
+| cust_id | c_name | city      |
++---------+--------+-----------+
+| c02     | manu   | aroor     |
+| c04     | varun  | cherthala |
+| c05     | arun   | thrissur  |
+| c06     | anu    | ktm       |
+| c09     | ajay   | delhi     |
+| c10     | diya   | goa       |
++---------+--------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from branch;
++------+---------+------------+
+| b_id | bname   | city       |
++------+---------+------------+
+| b01  | alpy    | alappuzha  |
+| b02  | aroor   | pallipuram |
+| b03  | aluva   | ekm        |
+| b04  | palayam | tvm        |
+| b07  | mysoor  | karnataka  |
+| b06  | delhi   | delhi      |
++------+---------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from deposit;
++--------+---------+--------+-----------+------------+
+| acc_no | cust_id | amt    | branch_id | opendate   |
++--------+---------+--------+-----------+------------+
+| a01    | c01     | 100000 | b03       | 2023-10-10 |
+| a21    | c03     |  45000 | b33       | 2019-10-01 |
+| a34    | c02     |  67000 | b09       | 2016-01-01 |
+| a03    | c06     |   7000 | b10       | 2026-12-09 |
+| a06    | c45     |  11000 | b87       | 2002-04-21 |
++--------+---------+--------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from borrow;
++---------+---------+-----------+-------+
+| loan_no | cust_id | branch_id | amt   |
++---------+---------+-----------+-------+
+| 002     | c02     | b23       |  2300 |
+| 010     | c10     | b33       |  9300 |
+| 023     | c09     | b04       |  6700 |
+| 078     | c07     | b05       | 34500 |
+| 034     | c25     | b01       |  4567 |
++---------+---------+-----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(amt) as totalloan from borrow;
++-----------+
+| totalloan |
++-----------+
+|     57367 |
++-----------+
+1 row in set (0.01 sec)
+
+mysql> select sum(amt) as totaldeposit from deposit;
++--------------+
+| totaldeposit |
++--------------+
+|       230000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amt) as maxdeposit from deposit where cust_id in(select cust_id from customer where city='ekm');
++------------+
+| maxdeposit |
++------------+
+|       NULL |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amt) as maxdeposit from deposit where cust_id in(select cust_id from customer where city='ktm');
++------------+
+| maxdeposit |
++------------+
+|       NULL |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amt) as maxdeposit from deposit where cust_id in(select cust_id from customerr where city='ktm');
++------------+
+| maxdeposit |
++------------+
+|       7000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct city)as totalbranchcities from branch;
++-------------------+
+| totalbranchcities |
++-------------------+
+|                 6 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select branch_id,sum(amt)as totaldeposit from deposit group by branch_id;
++-----------+--------------+
+| branch_id | totaldeposit |
++-----------+--------------+
+| b03       |       100000 |
+| b33       |        45000 |
+| b09       |        67000 |
+| b10       |         7000 |
+| b87       |        11000 |
++-----------+--------------+
+5 rows in set (0.00 sec)
+mysql> select count(distinct cust_id)as customercount from deposit where opendate >'2016-01-01';
++---------------+
+| customercount |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select branch_id,sum(amt) as total_deposit from deposit group by branch_id having sum(amt)>4000;
++-----------+---------------+
+| branch_id | total_deposit |
++-----------+---------------+
+| b03       |        100000 |
+| b33       |         45000 |
+| b09       |         67000 |
+| b10       |          7000 |
+| b87       |         11000 |
++-----------+---------------+
+5 rows in set (0.00 sec)
+mysql> select c_name from customerr where cust_id in(select cust_id from deposit group by cust_id having min(amt)=(select min(amt) from deposit));
++--------+
+| c_name |
++--------+
+| anu    |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct cust_id)as countdepositors from deposit where cust_id in (select cust_id from customerr where city='ktm');
++-----------------+
+| countdepositors |
++-----------------+
+|               1 |
++-----------------+
+1 row in set (0.00 sec)
+mysql> select * from customerr where city not in ('ekm','ktm');
++---------+--------+-----------+
+| cust_id | c_name | city      |
++---------+--------+-----------+
+| c02     | manu   | aroor     |
+| c04     | varun  | cherthala |
+| c05     | arun   | thrissur  |
+| c09     | ajay   | delhi     |
+| c10     | diya   | goa       |
++---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select count(*) as count_customer from customer where city='ekm';
++----------------+
+| count_customer |
++----------------+
+|              0 |
++----------------+
+1 row in set (0.00 sec)
+mysql> select max(amt) as maxdeposit from deposit where branch_id in(select branch_id from branch where city='alappuzha');
++------------+
+| maxdeposit |
++------------+
+|     100000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select cust_id,c_name from customerr order by c_name desc;
++---------+--------+
+| cust_id | c_name |
++---------+--------+
+| c04     | varun  |
+| c02     | manu   |
+| c10     | diya   |
+| c05     | arun   |
+| c06     | anu    |
+| c09     | ajay   |
++---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select branch_id,count(distinct cust_id)as countdepositor from deposit group by branch_id;
++-----------+----------------+
+| branch_id | countdepositor |
++-----------+----------------+
+| b03       |              1 |
+| b09       |              1 |
+| b10       |              1 |
+| b33       |              1 |
+| b87       |              1 |
++-----------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from branch where b_id not in(select distinct branch_id from borrow);
++------+--------+------------+
+| b_id | bname  | city       |
++------+--------+------------+
+| b02  | aroor  | pallipuram |
+| b03  | aluva  | ekm        |
+| b07  | mysoor | karnataka  |
+| b06  | delhi  | delhi      |
++------+--------+------------+
+4 rows in set (0.00 sec)
