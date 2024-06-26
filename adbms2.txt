@@ -1,0 +1,220 @@
+mysql> use bank;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> insert into customer values('abc','anu','salem');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into customer values('abc','anu','salem',5);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> truncate table customer;
+Query OK, 0 rows affected (0.92 sec)
+
+mysql> create table cust(cust_id varchar(10)primary key,c_name varchar(10),city varchar(10));
+Query OK, 0 rows affected (0.37 sec)
+
+mysql> create table branch(branch_id varchar(10)primary key,branch_name varchar(10),city varchar(10));
+Query OK, 0 rows affected (0.74 sec)
+
+mysql> create table DEPOSIT(Acc_no varchar(20)primary key , Cust_id varchar(10), Amount int, Branch_id varchar(10), Open_date date);
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> create table BORROW(Loan_no varchar(10)primary key, Cust_id varchar(10), Branch_id varchar(10), Amount int);
+Query OK, 0 rows affected (0.92 sec)
+
+mysql> insert into cust values('c001','joe','haryana');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into cust values('c002','diya','delhi');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into cust values('c003','zanu','kolkata');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into cust values('c006','anu','delhi');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into branch values('b01','kolkata','bengal');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into branch values('b03','adb','alpy');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into branch values('b02','chennai','chennai');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into DEPOSIT values('ac21','c002',20000,'b04','23-09-13');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into DEPOSIT values('ac45','c006',5000,'b03','24-09-13');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into DEPOSIT values('ac78','c012',78000,'b03','24-10-18');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into DEPOSIT values('ac10','c089',8000,'b01','02-10-18');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into BORROW values('l10','c001','b01',4500);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into BORROW values('l004','c012','b04',3400);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from cust;
++---------+--------+---------+
+| cust_id | c_name | city    |
++---------+--------+---------+
+| c001    | joe    | haryana |
+| c002    | diya   | delhi   |
+| c003    | zanu   | kolkata |
+| c006    | anu    | delhi   |
++---------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from branch;
++-----------+-------------+---------+
+| branch_id | branch_name | city    |
++-----------+-------------+---------+
+| b01       | kolkata     | bengal  |
+| b02       | chennai     | chennai |
+| b03       | adb         | alpy    |
++-----------+-------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from DEPOSIT;
++--------+---------+--------+-----------+------------+
+| Acc_no | Cust_id | Amount | Branch_id | Open_date  |
++--------+---------+--------+-----------+------------+
+| ac10   | c089    |   8000 | b01       | 2002-10-18 |
+| ac21   | c002    |  20000 | b04       | 2023-09-13 |
+| ac45   | c006    |   5000 | b03       | 2024-09-13 |
+| ac78   | c012    |  78000 | b03       | 2024-10-18 |
++--------+---------+--------+-----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from BORROW;
++---------+---------+-----------+--------+
+| Loan_no | Cust_id | Branch_id | Amount |
++---------+---------+-----------+--------+
+| l004    | c012    | b04       |   3400 |
+| l10     | c001    | b01       |   4500 |
++---------+---------+-----------+--------+
+2 rows in set (0.00 sec)
+ select cust_id,c_name from cust;
++---------+--------+
+| cust_id | c_name |
++---------+--------+
+| c001    | joe    |
+| c002    | diya   |
+| c003    | zanu   |
+| c006    | anu    |
++---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select cust_id from DEPOSIT where amount>1000;
++---------+
+| cust_id |
++---------+
+| c089    |
+| c002    |
+| c006    |
+| c012    |
++---------+
+4 rows in set (0.00 sec)
+
+mysql> select c_name from CUSTOMER where cust_id in (select cust_id from DEPOSIT) and cust_id in (select cust_id from BORROW);
++--------+
+| c_name |
++--------+
+| dev    |
+| varun  |
+| amala  |
++--------+
+mysql> select * from BRANCH;
++-----------+--------+---------+
+| branch_id | b_name | city    |
++-----------+--------+---------+
+| b1        | adb    | kolkata |
+| b3        | bck    | alp     |
+| b5        | sdf    | tvm     |
+| b2        | wed    | tvm     |
+| b8        | hjy    | delhi   |
++-----------+--------+---------+
+5 rows in set (0.03 sec)
+
+mysql> select * from CUSTOMER;
++---------+--------+---------+
+| cust_id | c_name | city    |
++---------+--------+---------+
+| c01     | anil   | tvm     |
+| c02     | dev    | chennai |
+| c03     | varun  | alpy    |
+| c04     | amala  | alpy    |
+| c05     | shikha | delhi   |
+| c06     | liju   | kolkata |
++---------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from BORROW;
++---------+---------+-----------+-------+
+| loan_no | cust_id | branch_id | amt   |
++---------+---------+-----------+-------+
+|       1 | c03     | b01       |  2000 |
+|       2 | c02     | b03       | 89000 |
+|       4 | c04     | b05       |  3000 |
+|       9 | c05     | b09       |   400 |
++---------+---------+-----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from DEPOSIT;
++--------+---------+-------+-----------+------------+
+| acc_no | cust_id | amt   | branch_id | open_date  |
++--------+---------+-------+-----------+------------+
+| a01a   | c01     | 44000 | b02       | 2021-03-18 |
+| a01n   | c03     | 41140 | b03       | 2021-12-19 |
+| b06g   | c04     |  7260 | b07       | 2007-11-23 |
+| c09f   | c02     |  1320 | b04       | 2002-01-15 |
+| bl65   | c09     |  1650 | b04       | 2002-11-13 |
++--------+---------+-------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> delete from DEPOSIT where branch_id in(select branch_id from BRANCH where city ='tvm');
+Query OK, 0 rows affected (0.00 sec)
+mysql> delete from DEPOSIT where branch_id in (select branch_id from BRANCH where branch_id in(select branch_id from CUSTOMER group by branch_id having count(cust_id) Between 1 and 3));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select c_name,cust_id from CUSTOMER where cust_id in (select cust_id from DEPOSIT);
++--------+---------+
+| c_name | cust_id |
++--------+---------+
+| anil   | c01     |
+| dev    | c02     |
+| varun  | c03     |
+| amala  | c04     |
++--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select c_name,amt from CUSTOMER join BORROW on CUSTOMER.cust_id=BORROW.cust_id;
++--------+-------+
+| c_name | amt   |
++--------+-------+
+| dev    | 89000 |
+| varun  |  2000 |
+| amala  |  3000 |
+| shikha |   400 |
++--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> delete from DEPOSIT where amt<10000;
+Query OK, 3 rows affected (0.16 sec)
+
+mysql> select * from DEPOSIT;
++--------+---------+-------+-----------+------------+
+| acc_no | cust_id | amt   | branch_id | open_date  |
++--------+---------+-------+-----------+------------+
+| a01a   | c01     | 53240 | b02       | 2021-03-18 |
+| a01n   | c03     | 45254 | b03       | 2021-12-19 |
++--------+---------+-------+-----------+------------+
+2 rows in set (0.01 sec)
