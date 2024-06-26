@@ -1,0 +1,46 @@
+create view location_view as select regional_group from location;
+Query OK, 0 rows affected (0.71 sec)
+
+mysql> select * from location_view;
++--------------------+
+| regional_group     |
++--------------------+
+| thiruvananthapuram |
+| kollam             |
+| pune               |
+| new york           |
+| mumbai             |
+| chennai            |
+| delhi              |
+| maharashtra        |
++--------------------+
+8 rows in set (0.10 sec)
+create index new_index on location(location_id);
+Query OK, 0 rows affected (0.87 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes from location;
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table    | Non_unique | Key_name       | Seq_in_index | Column_name    | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| location |          0 | PRIMARY        |            1 | location_id    | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| location |          1 | location_index |            1 | location_id    | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| location |          1 | location_index |            2 | regional_group | A         |           8 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| location |          1 | new_index      |            1 | location_id    | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+4 rows in set (0.88 sec)
+
+mysql> alter table location drop index new_index;
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes from location;
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table    | Non_unique | Key_name       | Seq_in_index | Column_name    | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| location |          0 | PRIMARY        |            1 | location_id    | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| location |          1 | location_index |            1 | location_id    | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| location |          1 | location_index |            2 | regional_group | A         |           8 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++----------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+3 rows in set (0.02 sec)
+
